@@ -7,9 +7,10 @@
 #include "InputActionValue.h"
 #include "Abyss_PlayerController.generated.h"
 
+class AAbyss_PlayerCharacter;
 class UInputMappingContext;
 class UInputAction;
-
+class UAbilitySystemComponent;
 
 
 
@@ -28,23 +29,46 @@ public:
 	virtual void SetupInputComponent() override;
 	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-	
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnUnPossess() override;
+	virtual void AcknowledgePossession(class APawn* P) override;
 	
 	
 	// Input Actions
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "---Abyss---|Input")
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Input")
 	UInputMappingContext* DefaultAbyssMappingContext;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "---Abyss---|Input|Action")
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Input|Action")
 	UInputAction* MoveAction;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "---Abyss---|Input|Action")
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Input|Action")
 	UInputAction* LookAction;
+	
+	
+	// Settings
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
+	float MouseSensitivity = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
+	bool bInvertYAxis = false;
+	
+	
+	// Accessors
+	UFUNCTION()
+	AAbyss_PlayerCharacter* GetTAbyssCharacter() const;
+
+	UFUNCTION()
+	UAbilitySystemComponent* GetAbilitySystemComponent() const;
 	
 	// =================================================================================================================
 protected:
 	// Input handlers
 	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
+	
+	
+	
+	UPROPERTY()
+	AAbyss_PlayerCharacter* CachedCharacter;
 	
 };

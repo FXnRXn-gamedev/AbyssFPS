@@ -6,6 +6,19 @@
 #include "AbyssFPS/Public/Character/Abyss_BaseCharacter.h"
 #include "Abyss_PlayerCharacter.generated.h"
 
+
+
+class UCameraComponent;
+
+
+
+
+
+
+
+
+
+
 UCLASS()
 class ABYSSFPS_API AAbyss_PlayerCharacter : public AAbyss_BaseCharacter
 {
@@ -13,6 +26,31 @@ class ABYSSFPS_API AAbyss_PlayerCharacter : public AAbyss_BaseCharacter
 	// =================================================================================================================
 public:
 	AAbyss_PlayerCharacter();
+	virtual void BeginPlay() override;
+	
+	
+	
+#pragma region Components
+	
+	// Components
+	UPROPERTY(VisibleAnywhere, Category = "---Abyss---|Components")
+	UCameraComponent* CameraComponent;
+#pragma endregion 
+	
+#pragma region Settings
+	// Settings
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
+	float DefaultFOV = 90.0f;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
+	float SprintSpeed = 800.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
+	float WalkSpeed = 400.0f;
+	
+#pragma endregion
+	
+	
 	
 	
 	

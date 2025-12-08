@@ -4,9 +4,7 @@
 #include "Character/Player/Abyss_PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-
-
-
+#include "Character/Player/Abyss_PlayerCharacter.h"
 
 
 // =====================================================================================================================
@@ -54,21 +52,70 @@ void AAbyss_PlayerController::GetLifetimeReplicatedProps(TArray<class FLifetimeP
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
+void AAbyss_PlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	
+	CachedCharacter = Cast<AAbyss_PlayerCharacter>(InPawn);
+	
+	//TODO : Initialize ability system
+	
+}
 
+void AAbyss_PlayerController::OnUnPossess()
+{
+	CachedCharacter = nullptr;
+	
+	Super::OnUnPossess();
+}
 
-
-
-
+void AAbyss_PlayerController::AcknowledgePossession(class APawn* P)
+{
+	Super::AcknowledgePossession(P);
+	
+	CachedCharacter = Cast<AAbyss_PlayerCharacter>(P);
+	
+	//TODO : Client-side ability system init
+}
 
 
 // =====================================================================================================================
 // ---> INPUT <---
 // =====================================================================================================================
 
+
+
 void AAbyss_PlayerController::Input_Move(const FInputActionValue& InputActionValue)
 {
+	if (!CachedCharacter) return;
+	
+	const FVector2D MoveValue = InputActionValue.Get<FVector2D>();
+	CachedCharacter->HandleMoveInput(MoveValue);
 }
 
 void AAbyss_PlayerController::Input_Look(const FInputActionValue& InputActionValue)
 {
+	if (!CachedCharacter) return;
+	
+	FVector2D LookValue = InputActionValue.Get<FVector2D>() * MouseSensitivity;
+	if (bInvertYAxis) LookValue.Y *= -1.0f;
+	CachedCharacter->HandleLookInput(LookValue);
+}
+
+
+// =====================================================================================================================
+// ---> HELPER <---
+// =====================================================================================================================
+
+
+
+AAbyss_PlayerCharacter* AAbyss_PlayerController::GetTAbyssCharacter() const
+{
+	return CachedCharacter ? CachedCharacter : Cast<AAbyss_PlayerCharacter>(GetPawn());
+}
+
+UAbilitySystemComponent* AAbyss_PlayerController::GetAbilitySystemComponent() const
+{
+	// TODO : Return ability system component from possessed character
+	return nullptr;
 }
