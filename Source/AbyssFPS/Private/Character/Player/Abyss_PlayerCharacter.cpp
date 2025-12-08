@@ -22,7 +22,7 @@ AAbyss_PlayerCharacter::AAbyss_PlayerCharacter()
 	// Setup Camera
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(GetCapsuleComponent());
-	CameraComponent->SetRelativeLocation(FVector(0.f, 0.f, 64.f));
+	CameraComponent->SetRelativeLocation(FVector(25.f, 0.f, 64.f));
 	CameraComponent->bUsePawnControlRotation = true;
 	
 	//--> NOT NEEDED : Configure mesh for third person

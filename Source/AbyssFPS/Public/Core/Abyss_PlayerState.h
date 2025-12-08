@@ -35,12 +35,20 @@ public:
 	AAbyss_PlayerState();
 	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
+	// Get IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
+	// Get Attribute Set
+	UAbyss_AttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
+	// Ability System Setup
+	void InitializeAbilitySystem(class AAbyss_PlayerCharacter* InOwner);
+
+
 	//------------------------------------------------------------------------------------------------------------------
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "---Abyss---|Abilities")
+	UPROPERTY(VisibleAnywhere, Category = "---Abyss---|Abilities")
 	UAbilitySystemComponent* AbilitySystemComponent = nullptr;
 	
 	UPROPERTY()

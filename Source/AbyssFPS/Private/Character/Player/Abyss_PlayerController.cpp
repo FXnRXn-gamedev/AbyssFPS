@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Character/Player/Abyss_PlayerCharacter.h"
+#include "Core/Abyss_PlayerState.h"
 
 
 // =====================================================================================================================
@@ -58,7 +59,10 @@ void AAbyss_PlayerController::OnPossess(APawn* InPawn)
 	
 	CachedCharacter = Cast<AAbyss_PlayerCharacter>(InPawn);
 	
-	//TODO : Initialize ability system
+	//Initialize ability system
+	AAbyss_PlayerState* PS  = GetPlayerState<AAbyss_PlayerState>();
+	if (PS && CachedCharacter) PS->InitializeAbilitySystem(CachedCharacter);
+	
 	
 }
 
@@ -75,7 +79,9 @@ void AAbyss_PlayerController::AcknowledgePossession(class APawn* P)
 	
 	CachedCharacter = Cast<AAbyss_PlayerCharacter>(P);
 	
-	//TODO : Client-side ability system init
+	//Client-side ability system init
+	AAbyss_PlayerState* PS  = GetPlayerState<AAbyss_PlayerState>();
+	if (PS && CachedCharacter) PS->InitializeAbilitySystem(CachedCharacter);
 }
 
 
