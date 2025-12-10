@@ -51,6 +51,33 @@ void AAbyss_PlayerState::InitializeAbilitySystem(class AAbyss_PlayerCharacter* I
 	if (AttributeSet) AbilitySystemComponent->AddSpawnedAttribute(AttributeSet);
 }
 
+void AAbyss_PlayerState::GiveAbility(TSubclassOf<UGameplayAbility> AbilityClass, int32 Level)
+{
+	if (!IsValid(AbilitySystemComponent) || !AbilityClass) return;
+
+	if (HasAuthority())
+	{
+		FGameplayAbilitySpec Spec(AbilityClass, Level, INDEX_NONE, this);
+		FGameplayAbilitySpecHandle AbilitySpecHandle = AbilitySystemComponent->GiveAbility(Spec);
+		GrantedAbilities.Add(AbilitySpecHandle);
+	}
+}
+
+void AAbyss_PlayerState::RemoveAbility(TSubclassOf<UGameplayAbility> AbilityClass)
+{
+	if (!IsValid(AbilitySystemComponent) || !AbilityClass) return;
+	
+	if (HasAuthority())
+	{
+		FGameplayAbilitySpec* Spec = AbilitySystemComponent->FindAbilitySpecFromClass(AbilityClass);
+		if (Spec)
+		{
+			AbilitySystemComponent->ClearAbility(Spec->Handle);
+			GrantedAbilities.Remove(Spec->Handle);
+		}
+	}
+}
+
 UAbilitySystemComponent* AAbyss_PlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;

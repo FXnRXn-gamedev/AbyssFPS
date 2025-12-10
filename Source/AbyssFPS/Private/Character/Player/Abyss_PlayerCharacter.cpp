@@ -3,9 +3,12 @@
 
 #include "AbyssFPS/Public/Character/Player/Abyss_PlayerCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Core/Abyss_PlayerState.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Utility/Abyss_DebugHelper.h"
 
 
 // =====================================================================================================================
@@ -49,6 +52,69 @@ void AAbyss_PlayerCharacter::BeginPlay()
 	if (CameraComponent) CameraComponent->SetFieldOfView(DefaultFOV);
 }
 
+void AAbyss_PlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	// Server-side ability system initialization
+	InitializeAbilitySystem();
+}
+
+void AAbyss_PlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	// Client-side ability system initialization
+	InitializeAbilitySystem();
+}
+
+
+// =====================================================================================================================
+// ---> GAS <---
+// =====================================================================================================================
+
+UAbilitySystemComponent* AAbyss_PlayerCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+void AAbyss_PlayerCharacter::InitializeAbilitySystem()
+{
+	AAbyss_PlayerState* PS = GetPlayerState<AAbyss_PlayerState>();
+	if (!PS) return;
+	
+	AbilitySystemComponent = PS->GetAbilitySystemComponent();
+	AttributeSet = PS->GetAttributeSet();
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(PS, this);
+		if (HasAuthority())
+		{
+			GiveDefaultAbilities();
+			ApplyDefaultAttributes();
+		}
+	}
+}
+
+void AAbyss_PlayerCharacter::GiveDefaultAbilities()
+{
+	if (!AbilitySystemComponent || !HasAuthority()) return;
+
+	if (DefaultAbilities.Num() <= 0) return;
+
+	for (TSubclassOf<UGameplayAbility>& AbilityClass : DefaultAbilities)
+	{
+		if (AbilityClass)
+		{
+			FGameplayAbilitySpec Spec(AbilityClass, 1, INDEX_NONE, this);
+			AbilitySystemComponent->GiveAbility(Spec);
+		}
+	}
+}
+
+void AAbyss_PlayerCharacter::ApplyDefaultAttributes()
+{
+	if (!AbilitySystemComponent || !DefaultAttributes || !HasAuthority()) return;
+}
+
 
 // =====================================================================================================================
 // ---> LOCOMOTION HANDLING <---
@@ -74,3 +140,5 @@ void AAbyss_PlayerCharacter::HandleLookInput(const FVector2D& LookInput)
 	AddControllerYawInput(LookInput.X);
 	AddControllerPitchInput(LookInput.Y);
 }
+
+

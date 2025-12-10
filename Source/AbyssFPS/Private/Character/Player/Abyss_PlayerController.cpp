@@ -122,6 +122,7 @@ AAbyss_PlayerCharacter* AAbyss_PlayerController::GetTAbyssCharacter() const
 
 UAbilitySystemComponent* AAbyss_PlayerController::GetAbilitySystemComponent() const
 {
-	// TODO : Return ability system component from possessed character
-	return nullptr;
+	// Return ability system component from possessed character
+	AAbyss_PlayerState* PS = GetPlayerState<AAbyss_PlayerState>();
+	return PS ? PS->GetAbilitySystemComponent() : nullptr;
 }

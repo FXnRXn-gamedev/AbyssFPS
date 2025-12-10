@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerState.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayEffectTypes.h"
+#include "GameplayAbilitySpec.h"
 
 
 #include "Abyss_PlayerState.generated.h"
@@ -17,7 +18,6 @@ class UAbilitySystemComponent;
 class UAbyss_AttributeSet;
 class UGameplayAbility;
 class UGameplayEffect;
-
 
 
 
@@ -44,6 +44,15 @@ public:
 	
 	// Ability System Setup
 	void InitializeAbilitySystem(class AAbyss_PlayerCharacter* InOwner);
+	
+	// Grants an ability to the player
+	UFUNCTION()
+	void GiveAbility(TSubclassOf<UGameplayAbility> AbilityClass, int32 Level = 1);
+	
+	UFUNCTION()
+	void RemoveAbility(TSubclassOf<UGameplayAbility> AbilityClass);
+	
+	// TODO : Applies a gameplay effect to the plater
 
 
 	//------------------------------------------------------------------------------------------------------------------
@@ -53,4 +62,8 @@ protected:
 	
 	UPROPERTY()
 	UAbyss_AttributeSet* AttributeSet = nullptr;
+	
+	
+	// Granted ability handles
+	TArray<FGameplayAbilitySpecHandle> GrantedAbilities;
 };
