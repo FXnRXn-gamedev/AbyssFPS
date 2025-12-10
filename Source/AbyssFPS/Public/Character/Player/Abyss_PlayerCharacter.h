@@ -8,7 +8,6 @@
 #include "Abyss_PlayerCharacter.generated.h"
 
 
-
 class UCameraComponent;
 class UAbilitySystemComponent;
 class UAbyss_AttributeSet;
@@ -48,7 +47,6 @@ public:
 #pragma endregion 
 	
 #pragma region GAS
-	
 	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|GAS")
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 	

@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Core/Abyss_PlayerState.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GAS/Abilities/Abyss_GameplayAbilityBase.h"
 #include "Utility/Abyss_DebugHelper.h"
 
 
@@ -98,13 +99,20 @@ void AAbyss_PlayerCharacter::GiveDefaultAbilities()
 {
 	if (!AbilitySystemComponent || !HasAuthority()) return;
 
-	if (DefaultAbilities.Num() <= 0) return;
-
 	for (TSubclassOf<UGameplayAbility>& AbilityClass : DefaultAbilities)
 	{
 		if (AbilityClass)
 		{
-			FGameplayAbilitySpec Spec(AbilityClass, 1, INDEX_NONE, this);
+			// Get the input ID from the ability's CDO
+			const UGameplayAbility* AbilityCDO = AbilityClass.GetDefaultObject();
+			int32 InputID = INDEX_NONE;
+
+			if (const UAbyss_GameplayAbilityBase* AbyssAbility = Cast<UAbyss_GameplayAbilityBase>(AbilityCDO))
+			{
+				InputID = static_cast<int32>(AbyssAbility->AbilityInputID);
+			}
+
+			FGameplayAbilitySpec Spec(AbilityClass, 1, InputID, this);
 			AbilitySystemComponent->GiveAbility(Spec);
 		}
 	}

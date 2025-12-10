@@ -44,6 +44,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Input|Action")
 	UInputAction* LookAction;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Input|Action")
+	UInputAction* JumpAction;
+	
 	
 	// Settings
 	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
@@ -65,10 +68,17 @@ protected:
 	// Input handlers
 	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
+	void Input_Jump_Started(const FInputActionValue& InputActionValue);
+	void Input_Jump_Completed(const FInputActionValue& InputActionValue);
 	
 	
+	// Send ability input to GAS
+	void SendLocalInputToASC(bool bPressed, int32 InputID);
 	
+	// Cached Character
 	UPROPERTY()
 	AAbyss_PlayerCharacter* CachedCharacter;
 	
 };
+
+

@@ -2,10 +2,13 @@
 
 
 #include "Character/Player/Abyss_PlayerController.h"
+
+#include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Character/Player/Abyss_PlayerCharacter.h"
 #include "Core/Abyss_PlayerState.h"
+#include "GAS/Abilities/Abyss_GameplayAbilityBase.h"
 
 
 // =====================================================================================================================
@@ -40,6 +43,13 @@ void AAbyss_PlayerController::SetupInputComponent()
 
 	if (MoveAction) EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	if (LookAction) EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	
+	// Jump
+	if (JumpAction)
+	{
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Input_Jump_Started);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ThisClass::Input_Jump_Completed);
+	}
 	
 }
 
@@ -86,6 +96,27 @@ void AAbyss_PlayerController::AcknowledgePossession(class APawn* P)
 
 
 // =====================================================================================================================
+// ---> GAS <---
+// =====================================================================================================================
+
+
+void AAbyss_PlayerController::SendLocalInputToASC(bool bPressed, int32 InputID)
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if (!ASC) return;
+
+	if (bPressed)
+	{
+		ASC->AbilityLocalInputPressed(InputID);
+	}
+	else
+	{
+		ASC->AbilityLocalInputReleased(InputID);
+	}
+}
+
+
+// =====================================================================================================================
 // ---> INPUT <---
 // =====================================================================================================================
 
@@ -106,6 +137,16 @@ void AAbyss_PlayerController::Input_Look(const FInputActionValue& InputActionVal
 	FVector2D LookValue = InputActionValue.Get<FVector2D>() * MouseSensitivity;
 	if (bInvertYAxis) LookValue.Y *= -1.0f;
 	CachedCharacter->HandleLookInput(LookValue);
+}
+
+void AAbyss_PlayerController::Input_Jump_Started(const FInputActionValue& InputActionValue)
+{
+	SendLocalInputToASC(true, static_cast<int32>(EAbyss_AbilityInputID::Jump));
+}
+
+void AAbyss_PlayerController::Input_Jump_Completed(const FInputActionValue& InputActionValue)
+{
+	SendLocalInputToASC(false, static_cast<int32>(EAbyss_AbilityInputID::Jump));
 }
 
 
