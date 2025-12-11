@@ -47,6 +47,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Input|Action")
 	UInputAction* JumpAction;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Input|Action")
+	UInputAction* SprintAction;
+	
 	
 	// Settings
 	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
@@ -70,6 +73,8 @@ protected:
 	void Input_Look(const FInputActionValue& InputActionValue);
 	void Input_Jump_Started(const FInputActionValue& InputActionValue);
 	void Input_Jump_Completed(const FInputActionValue& InputActionValue);
+	void Input_Sprint_Started(const FInputActionValue& InputActionValue);
+	void Input_Sprint_Completed(const FInputActionValue& InputActionValue);
 	
 	
 	// Send ability input to GAS

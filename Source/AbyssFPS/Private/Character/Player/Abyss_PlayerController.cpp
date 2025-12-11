@@ -51,6 +51,12 @@ void AAbyss_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ThisClass::Input_Jump_Completed);
 	}
 	
+	if (SprintAction)
+	{
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ThisClass::Input_Sprint_Started);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ThisClass::Input_Sprint_Completed);
+	}
+	
 }
 
 
@@ -147,6 +153,16 @@ void AAbyss_PlayerController::Input_Jump_Started(const FInputActionValue& InputA
 void AAbyss_PlayerController::Input_Jump_Completed(const FInputActionValue& InputActionValue)
 {
 	SendLocalInputToASC(false, static_cast<int32>(EAbyss_AbilityInputID::Jump));
+}
+
+void AAbyss_PlayerController::Input_Sprint_Started(const FInputActionValue& InputActionValue)
+{
+	SendLocalInputToASC(true, static_cast<int32>(EAbyss_AbilityInputID::Sprint));
+}
+
+void AAbyss_PlayerController::Input_Sprint_Completed(const FInputActionValue& InputActionValue)
+{
+	SendLocalInputToASC(false, static_cast<int32>(EAbyss_AbilityInputID::Sprint));
 }
 
 

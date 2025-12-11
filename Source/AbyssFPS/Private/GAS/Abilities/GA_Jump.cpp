@@ -19,7 +19,6 @@ UGA_Jump::UGA_Jump()
 	ActivationPolicy = EAbyss_AbilityActivationPolicy::OnInputTrigger;
 	
 	// Ability Tags
-	// AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Jump")));
 	FGameplayTagContainer AssetTags;
 	AssetTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Jump")));
 	SetAssetTags(AssetTags);
