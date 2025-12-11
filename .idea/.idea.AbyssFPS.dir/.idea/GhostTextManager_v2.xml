@@ -63,12 +63,25 @@
             </GhostTextMetaData>
           </value>
         </entry>
-        <entry key="Solve error">
+        <entry key="Solve &#10;0&gt;GA_Jump.cpp(22,2): Warning C4996 : 'UGameplayAbility::AbilityTags': Use GetAssetTags(). This is being made non-mutable, private and renamed to AssetTags in the future. Use SetAssetTags to set defaults (in constructor only). - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.&#10;0&gt;&#9;AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName(&quot;Ability.Jump&quot;)));">
           <value>
             <GhostTextMetaData>
               <option name="count" value="1.0" />
               <option name="timestamps">
                 <list>
+                  <option value="1765420915817" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="Solve error">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="2.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1765419300924" />
                   <option value="1765343872996" />
                 </list>
               </option>
@@ -94,6 +107,18 @@
               <option name="timestamps">
                 <list>
                   <option value="1765363206152" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="Unable to bind delegate to 'OnLanded' (function might not be marked as a UFUNCTION or object may be pending kill)&#10;&#10;error while jump">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1765421323937" />
                 </list>
               </option>
             </GhostTextMetaData>

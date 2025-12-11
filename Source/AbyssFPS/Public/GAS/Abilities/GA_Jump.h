@@ -39,4 +39,44 @@ public:
 		const FGameplayAbilityActivationInfo ActivationInfo, 
 		bool bReplicateEndAbility, bool bWasCancelled) override;
 	
+	
+	// Called when character landed
+	UFUNCTION()
+	void OnLanded(const FHitResult& Hit);
+	
+	
+	
+	//------------------------------------------------------------------------------------------------------------------
+protected:
+	
+# pragma region Settings
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Jump")
+	float JumpZVelocity = 600.f;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Jump")
+	float AirControl = 0.35f;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Jump")
+	int32 MaxJumpCount = 1;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Jump")
+	float JumpCooldown = 0.1f;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Jump")
+	bool bCanJumpWhileCrouching = false;
+	
+	// Effects
+	
+# pragma endregion 
+	
+	// Current jump count
+	int32 CurrentJumpCount = 0;
+	
+	
+	void PerformJump();
+	void PlayJumpEffects();
+	void PlayLandEffects(const FHitResult& Hit);
+	bool IsOnGround() const;
+	void StartWaitingForLanding();
+	
 };

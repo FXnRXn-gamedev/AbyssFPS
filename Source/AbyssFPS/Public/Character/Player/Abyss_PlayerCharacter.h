@@ -59,9 +59,6 @@ public:
 	// Settings
 	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
 	float DefaultFOV = 90.0f;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
-	float SprintSpeed = 800.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "---Abyss---|Settings")
 	float WalkSpeed = 400.0f;
